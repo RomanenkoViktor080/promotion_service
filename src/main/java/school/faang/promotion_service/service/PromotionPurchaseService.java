@@ -1,7 +1,7 @@
 package school.faang.promotion_service.service;
 
 import school.faang.promotion_service.dto.promotion.PromotionPurchaseDto;
-import school.faang.promotion_service.kafka.dto.PromotionPurchaseCompleteEvent;
+import school.faang.promotion_service.kafka.dto.promotion.PromotionPurchaseCompleteEvent;
 
 public interface PromotionPurchaseService {
     void purchase(PromotionPurchaseDto dto);

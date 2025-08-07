@@ -6,8 +6,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import school.faang.promotion_service.entity.user_promotion.UserPromotion;
 import school.faang.promotion_service.entity.user_promotion.UserPromotionStatus;
-import school.faang.promotion_service.kafka.dto.UserChangeTariffEvent;
-import school.faang.promotion_service.kafka.dto.UserViewDto;
+import school.faang.promotion_service.kafka.dto.user.UserChangeTariffEvent;
+import school.faang.promotion_service.kafka.dto.user.UserViewEvent;
 import school.faang.promotion_service.kafka.producer.PromotionProducer;
 import school.faang.promotion_service.repository.UserPromotionRepository;
 
@@ -27,7 +27,7 @@ public class PromotionCounterServiceImpl implements PromotionCounterService {
 
     @Override
     @Transactional
-    public void onView(UserViewDto dto) {
+    public void onView(UserViewEvent dto) {
         String redisKey = getKey(dto.userId(), dto.promotionId());
         if (!redisTemplate.hasKey(redisKey)) {
             initCounter(dto.userId(), dto.promotionId());

@@ -24,7 +24,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic searchUserImpressionEvents() {
-        return TopicBuilder.name("search.user.impression.events").build();
+        return TopicBuilder.name("search.user.impression").build();
     }
 
 }

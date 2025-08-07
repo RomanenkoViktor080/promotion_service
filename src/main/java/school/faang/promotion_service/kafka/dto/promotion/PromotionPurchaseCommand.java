@@ -1,17 +1,20 @@
-package school.faang.promotion_service.kafka.dto;
+package school.faang.promotion_service.kafka.dto.promotion;
 
-import lombok.Builder;
 import school.faang.promotion_service.kafka.EnvelopeMessageJsonNode;
+import lombok.Builder;
+
+import java.math.BigDecimal;
 
 @Builder
-public record UserChangeTariffEvent(
+public record PromotionPurchaseCommand(
         long userId,
-        Long tariffId,
-        Long promotionId
+        long tariffId,
+        long paymentMethodId,
+        BigDecimal price
 ) implements EnvelopeMessageJsonNode {
     @Override
     public String getType() {
-        return "USER_PROMOTED";
+        return "USER_PROMOTION";
     }
 
     @Override

@@ -1,4 +1,4 @@
-package school.faang.promotion_service.kafka.dto;
+package school.faang.promotion_service.kafka.dto.promotion;
 
 import lombok.Builder;
 

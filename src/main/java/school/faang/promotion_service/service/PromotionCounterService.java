@@ -1,9 +1,9 @@
 package school.faang.promotion_service.service;
 
-import school.faang.promotion_service.kafka.dto.UserViewDto;
+import school.faang.promotion_service.kafka.dto.user.UserViewEvent;
 
 public interface PromotionCounterService {
-    void onView(UserViewDto dto);
+    void onView(UserViewEvent dto);
 
     void initCounter(long userId, long promotionId);
 }

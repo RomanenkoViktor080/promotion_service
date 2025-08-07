@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import school.faang.promotion_service.kafka.EnvelopeMessage;
-import school.faang.promotion_service.kafka.dto.PromotionPurchaseCommand;
-import school.faang.promotion_service.kafka.dto.UserChangeTariffEvent;
+import school.faang.promotion_service.kafka.dto.promotion.PromotionPurchaseCommand;
+import school.faang.promotion_service.kafka.dto.user.UserChangeTariffEvent;
 
 @RequiredArgsConstructor
 @Component
