@@ -3,7 +3,7 @@ spring:
     name: promotion_service
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5433/promotion
     username: user
     password: password
   jpa:
@@ -40,3 +40,14 @@ logging:
   level:
     root: info
 
+jwt:
+  access:
+    secret: fe36efc1dc7ed4e847bba155b7932318f2729c68428c891f90de21849851aa4a
+    expiration: 600000
+  refresh:
+    secret: fe36efc1dc7ed4e847bba155b7932318f2729c68428c891f90de21849851aa4a
+    expiration: 604800000
+
+account-service:
+  host: http://localhost
+  port: 8090
