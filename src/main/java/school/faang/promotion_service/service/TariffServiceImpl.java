@@ -21,7 +21,7 @@ public class TariffServiceImpl implements TariffService {
     public TariffDto create(CreateTariffDto dto) {
         Tariff tariff = repository.save(mapper.toTariff(dto));
 
-        tariffProducer.onCreate(mapper.toCreateTariffEvent(tariff));
+        tariffProducer.onCreate(tariff.getId(), mapper.toCreateTariffEvent(tariff));
 
         return mapper.toTariffDto(tariff);
     }

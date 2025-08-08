@@ -15,10 +15,10 @@ public class TariffProducerImpl implements TariffProducer {
     private final KafkaTemplate<String, Object> producer;
 
     @Override
-    public void onCreate(CreateTariffEvent event) {
+    public void onCreate(long id, CreateTariffEvent event) {
         producer.send(
                 "promotion.tariff.events",
-                String.valueOf(event.getId()),
+                String.valueOf(id),
                 new EnvelopeMessage(event.getType(), objectMapper.valueToTree(event))
         );
     }
