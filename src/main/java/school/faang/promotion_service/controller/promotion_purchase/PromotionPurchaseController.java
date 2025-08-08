@@ -1,6 +1,7 @@
 package school.faang.promotion_service.controller.promotion_purchase;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +19,7 @@ public class PromotionPurchaseController {
     private final PromotionPurchaseService service;
 
     @PostMapping
-    public ResponseEntity<Void> purchase(@RequestBody PromotionPurchaseDto dto) {
+    public ResponseEntity<Void> purchase(@RequestBody @Valid PromotionPurchaseDto dto) {
         service.purchase(dto);
 
         return ResponseEntity.accepted()

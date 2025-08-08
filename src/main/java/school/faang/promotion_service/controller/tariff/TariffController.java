@@ -24,7 +24,7 @@ public class TariffController {
     private final TariffService tariffService;
 
     @PostMapping
-    public ResponseEntity<TariffDto> create(@RequestBody CreateTariffDto dto) {
+    public ResponseEntity<TariffDto> create(@RequestBody @Valid CreateTariffDto dto) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(tariffService.create(dto));
