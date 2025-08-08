@@ -29,10 +29,13 @@ public class Tariff {
     private Long id;
 
     @Column(name = "title", length = 64, unique = true, nullable = false)
-    private String string;
+    private String title;
 
     @Column(name = "description", length = 1024)
     private String description;
+
+    @Column(name = "boost_factor")
+    private double boostFactor;
 
     @Column(name = "promotion_count", nullable = false)
     private int promotionCount;

@@ -3,6 +3,7 @@ CREATE TABLE tariffs (
     title varchar(64) UNIQUE NOT NULL,
     description varchar(1024),
     promotion_count int NOT NULL,
+    boost_factor DOUBLE PRECISION NOT NULL,
     base_price decimal(10, 2) NOT NULL,
     duration_days decimal(10, 2) NOT NULL,
     active boolean DEFAULT TRUE NOT NULL,

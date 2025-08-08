@@ -23,6 +23,11 @@ public class KafkaTopicConfig {
     }
 
     @Bean
+    public NewTopic promotionTariffEvents() {
+        return TopicBuilder.name("promotion.tariff.events").build();
+    }
+
+    @Bean
     public NewTopic searchUserImpressionEvents() {
         return TopicBuilder.name("search.user.impression").build();
     }
