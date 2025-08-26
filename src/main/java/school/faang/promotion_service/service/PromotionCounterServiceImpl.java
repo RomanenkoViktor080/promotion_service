@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import school.faang.avro.user.UserChangeTariffEvent;
+import school.faang.avro.user.UserViewEvent;
 import school.faang.promotion_service.entity.user_promotion.UserPromotion;
 import school.faang.promotion_service.entity.user_promotion.UserPromotionStatus;
-import school.faang.promotion_service.kafka.dto.user.UserChangeTariffEvent;
-import school.faang.promotion_service.kafka.dto.user.UserViewEvent;
 import school.faang.promotion_service.kafka.producer.PromotionProducer;
 import school.faang.promotion_service.repository.UserPromotionRepository;
 
@@ -28,15 +28,15 @@ public class PromotionCounterServiceImpl implements PromotionCounterService {
     @Override
     @Transactional
     public void onView(UserViewEvent dto) {
-        String redisKey = getKey(dto.userId(), dto.promotionId());
+        String redisKey = getKey(dto.getUserId(), dto.getPromotionId());
         if (!redisTemplate.hasKey(redisKey)) {
-            initCounter(dto.userId(), dto.promotionId());
+            initCounter(dto.getUserId(), dto.getPromotionId());
         }
         long views = redisTemplate.opsForHash().increment(redisKey, VIEWS_KEY, 1L);
         Object currentLimit = redisTemplate.opsForHash().get(redisKey, LIMIT_KEY);
 
         if (currentLimit != null && views >= Long.parseLong(currentLimit.toString())) {
-            deactivatePromotion(dto.promotionId(), dto.userId(), views);
+            deactivatePromotion(dto.getPromotionId(), dto.getUserId(), views);
         }
     }
 
@@ -56,10 +56,10 @@ public class PromotionCounterServiceImpl implements PromotionCounterService {
     private void deactivatePromotion(long promotionId, long userId, long views) {
         promotionRepository.updateStatusAndUsedCount(promotionId, UserPromotionStatus.UNACTIVE, views);
         promotionProducer.sendUserChangeTariff(
-                UserChangeTariffEvent.builder()
-                        .userId(userId)
-                        .tariffId(null)
-                        .promotionId(null)
+                UserChangeTariffEvent.newBuilder()
+                        .setUserId(userId)
+                        .setTariffId(null)
+                        .setPromotionId(null)
                         .build()
         );
     }

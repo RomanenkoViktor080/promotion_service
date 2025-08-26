@@ -1,36 +1,36 @@
 package school.faang.promotion_service.kafka.producer;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import school.faang.promotion_service.kafka.EnvelopeMessage;
-import school.faang.promotion_service.kafka.dto.promotion.PromotionPurchaseCommand;
-import school.faang.promotion_service.kafka.dto.user.UserChangeTariffEvent;
+import school.faang.avro.promotion.PromotionPurchaseCommand;
+import school.faang.avro.user.UserChangeTariffEvent;
 
 @RequiredArgsConstructor
 @Component
 public class PromotionProducerImpl implements PromotionProducer {
-    private final KafkaTemplate<String, Object> producer;
-    private final ObjectMapper objectMapper;
+    @Value("${spring.kafka.topics.account-transactions-commands.name}")
+    private String accountTransactionsCommandsTopic;
+    @Value("${spring.kafka.topics.promotion-users-events.name}")
+    private String promotionUsersEventsTopic;
 
+    private final KafkaTemplate<String, PromotionPurchaseCommand> purchaseProducer;
+    private final KafkaTemplate<String, UserChangeTariffEvent> changeTariffProducer;
 
     public void sendPurchaseRequest(PromotionPurchaseCommand dto) {
-        JsonNode payloadNode = objectMapper.valueToTree(dto);
-        producer.send(
-                "account.transaction.commands",
-                String.valueOf(dto.getId()),
-                new EnvelopeMessage(dto.getType(), payloadNode)
+        purchaseProducer.send(
+                accountTransactionsCommandsTopic,
+                String.valueOf(dto.getUserId()),
+                dto
         );
     }
 
     public void sendUserChangeTariff(UserChangeTariffEvent dto) {
-        JsonNode payloadNode = objectMapper.valueToTree(dto);
-        producer.send(
-                "promotion.user.events",
-                String.valueOf(dto.getId()),
-                new EnvelopeMessage(dto.getType(), payloadNode)
+        changeTariffProducer.send(
+                promotionUsersEventsTopic,
+                String.valueOf(dto.getUserId()),
+                dto
         );
     }
 }

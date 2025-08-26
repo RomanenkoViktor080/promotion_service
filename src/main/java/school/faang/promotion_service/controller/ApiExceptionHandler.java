@@ -2,15 +2,14 @@ package school.faang.promotion_service.controller;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import jakarta.validation.Path;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import school.faang.promotion_service.exception.ApiException;
+import school.faang.promotion_service.exception.LoggableException;
+import school.faang.promotion_service.exception.api.ApiException;
 
 import java.util.HashMap;
 import java.util.List;
@@ -56,15 +55,6 @@ public class ApiExceptionHandler {
                 : path.get(path.size() - 1).getFieldName();
     }
 
-    private String extractFieldName(Path propertyPath) {
-        String fieldName = null;
-        for (Path.Node node : propertyPath) {
-            fieldName = node.getName();
-        }
-        return fieldName;
-    }
-
-
     @ExceptionHandler(ApiException.class)
     public ResponseEntity<Map<String, String>> handleApiException(ApiException ex) {
         log.error(ex.getDebugMessage());
@@ -73,12 +63,9 @@ public class ApiExceptionHandler {
                 .body(Map.of("error", ex.getMessage()));
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, String>> handleException(ApiException ex) {
+    @ExceptionHandler(LoggableException.class)
+    public void handleLoggableException(ApiException ex) {
         log.error(ex.getDebugMessage());
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "Something went wrong"));
     }
 }
 

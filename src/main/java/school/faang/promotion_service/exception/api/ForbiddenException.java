@@ -1,4 +1,4 @@
-package school.faang.promotion_service.exception;
+package school.faang.promotion_service.exception.api;
 
 import org.springframework.http.HttpStatus;
 

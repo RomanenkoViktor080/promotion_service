@@ -1,6 +1,6 @@
 package school.faang.promotion_service.service;
 
-import school.faang.promotion_service.kafka.dto.user.UserViewEvent;
+import school.faang.avro.user.UserViewEvent;
 
 public interface PromotionCounterService {
     void onView(UserViewEvent dto);

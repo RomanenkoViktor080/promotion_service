@@ -1,34 +1,36 @@
 package school.faang.promotion_service.kafka.producer;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import school.faang.promotion_service.kafka.EnvelopeMessage;
-import school.faang.promotion_service.kafka.dto.tariff.CreateTariffEvent;
-import school.faang.promotion_service.kafka.dto.tariff.UpdateTariffEvent;
+import school.faang.avro.tariff.CreateTariffEvent;
+import school.faang.avro.tariff.UpdateTariffEvent;
 
 @RequiredArgsConstructor
 @Component
 public class TariffProducerImpl implements TariffProducer {
-    private final ObjectMapper objectMapper;
-    private final KafkaTemplate<String, Object> producer;
+    @Value("${spring.kafka.topics.promotion-tariffs-events.name}")
+    private String promotionTariffsEventsTopic;
+
+    private final KafkaTemplate<String, CreateTariffEvent> createTariffProducer;
+    private final KafkaTemplate<String, UpdateTariffEvent> updateTariffProducer;
 
     @Override
     public void onCreate(long id, CreateTariffEvent event) {
-        producer.send(
-                "promotion.tariff.events",
+        createTariffProducer.send(
+                promotionTariffsEventsTopic,
                 String.valueOf(id),
-                new EnvelopeMessage(event.getType(), objectMapper.valueToTree(event))
+                event
         );
     }
 
     @Override
     public void onUpdate(UpdateTariffEvent event) {
-        producer.send(
-                "promotion.tariff.events",
+        updateTariffProducer.send(
+                promotionTariffsEventsTopic,
                 String.valueOf(event.getId()),
-                new EnvelopeMessage(event.getType(), objectMapper.valueToTree(event))
+                event
         );
     }
 }

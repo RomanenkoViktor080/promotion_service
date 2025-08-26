@@ -2,12 +2,12 @@ package school.faang.promotion_service.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
+import school.faang.avro.tariff.CreateTariffEvent;
+import school.faang.avro.tariff.UpdateTariffEvent;
 import school.faang.promotion_service.dto.tariff.CreateTariffDto;
 import school.faang.promotion_service.dto.tariff.TariffDto;
 import school.faang.promotion_service.dto.tariff.UpdateTariffDto;
 import school.faang.promotion_service.entity.Tariff;
-import school.faang.promotion_service.kafka.dto.tariff.CreateTariffEvent;
-import school.faang.promotion_service.kafka.dto.tariff.UpdateTariffEvent;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
 public interface TariffMapper {

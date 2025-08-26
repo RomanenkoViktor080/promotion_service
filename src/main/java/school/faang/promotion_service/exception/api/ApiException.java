@@ -1,12 +1,12 @@
-package school.faang.promotion_service.exception;
+package school.faang.promotion_service.exception.api;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
+import school.faang.promotion_service.exception.LoggableException;
 
 @Getter
-public abstract class ApiException extends RuntimeException {
+public abstract class ApiException extends LoggableException {
     private final HttpStatus status;
-    private final String debugMessage;
 
     protected ApiException(String message, String debugMessage) {
         super(message);
