@@ -3,7 +3,7 @@ spring:
     name: promotion_service
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5433/promotion
     username: user
     password: password
   jpa:
@@ -16,7 +16,34 @@ spring:
         format_sql: true
   kafka:
     bootstrap-servers: localhost:9092
-    group-id: promotion_service
+    properties:
+      schema.registry.url: http://localhost:8081
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.KafkaAvroDeserializer
+      group-id: promotion_service
+      properties:
+        specific.avro.reader: true
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+      properties:
+        value.subject.name.strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+    topics:
+      user-create:
+        name: users.create
+      user-update:
+        name: users.update
+      promotion-users-events:
+        name: promotion.users.events
+      search-users-impression:
+        name: search.users.impression
+      promotion-tariffs-events:
+        name: promotion.tariffs.events
+      account-transactions-commands:
+        name: account.transactions.commands
+      account-transactions-events:
+        name: account.transactions.events
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -40,3 +67,14 @@ logging:
   level:
     root: info
 
+jwt:
+  access:
+    secret: fe36efc1dc7ed4e847bba155b7932318f2729c68428c891f90de21849851aa4a
+    expiration: 600000
+  refresh:
+    secret: fe36efc1dc7ed4e847bba155b7932318f2729c68428c891f90de21849851aa4a
+    expiration: 604800000
+
+account-service:
+  host: http://localhost
+  port: 8090
